@@ -7,10 +7,13 @@ connections = [];
 
 
 app.get('/', function (req, res) {
+  console.log(`root: ${__dirname}`);
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function (socket) {
+  // console.log(connections);
+  socket.broadcast.emit('hi');
   connections.push(socket);
   console.log("Connected: %s sockets connected", connections.length);
 
@@ -20,9 +23,10 @@ io.on('connection', function (socket) {
     console.log("Disconnected: %s sockets connected", connections.length);
   });
 
-  socket.on('chat message', function (msg) {
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
+  socket.on('chat message', function (data) {
+    console.log('message: ' + data.msg);
+    let user = connections.indexOf(socket) + 1;
+    io.emit('chat message', "user " + user + ":" + data.msg);
   });
 
 });

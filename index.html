@@ -47,9 +47,10 @@
         var $messageForm = $('#messageForm');
         var $message = $('#message');
         var $chat = $('#chat');
-
         $messageForm.submit(function () {
-          socket.emit('chat message', $message.val());
+          socket.emit('chat message', {
+            msg: $message.val()
+          });
           $message.val('');
           return false;
         });
