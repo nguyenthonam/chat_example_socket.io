@@ -1,0 +1,16 @@
+{
+  "name": "chat_example",
+  "version": "1.0.0",
+  "description": "simple chat app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NamNT",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "http": "*",
+    "socket.io": "*"
+  }
+}
