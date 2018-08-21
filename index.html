@@ -29,6 +29,7 @@
         </div>
         <div class="col-md-8">
           <ul class="chat" id="chat"></ul>
+          <div id="feedback"></div>
 
           <form id="messageForm">
             <div class="form-group">
@@ -47,6 +48,7 @@
         var $messageForm = $('#messageForm');
         var $message = $('#message');
         var $chat = $('#chat');
+        var $feedback = $('#feedback');
         $messageForm.submit(function () {
           socket.emit('chat message', {
             msg: $message.val()
@@ -56,16 +58,29 @@
         });
 
         $message.keydown(function (e) {
-          if (e.keyCode != 13) return;
+          if (e.keyCode != 13) {
+            socket.emit('typing', $message.val());
+            return;
+          }
+
           if (e.keyCode == 13 && $message.val() != '') {
             $messageForm.trigger('submit');
           }
           return false;
         });
 
+        socket.on('hi', function (data) {
+          $chat.append("<li>" + data.msg + "</li>");
+        });
+
         socket.on('chat message', (msg) => {
-          // console.log(msg);
+          $feedback.html('');
           $chat.append("<li>" + msg + "</li>");
+        });
+
+        socket.on('typing', (msg) => {
+          console.log(msg);
+          $feedback.html(msg);
         });
       });
     </script>
